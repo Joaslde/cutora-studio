@@ -1,0 +1,27 @@
+{
+  "style": "C:/Users/<nom>/Documents/Cutora-Studio/profils/<personne>/styles/<style>/choix.json",
+  "projet": "../montage",
+  "largeur": 1080,
+  "hauteur": 1920,
+  "duree": 62.4,
+  "voix": "assets/voice/voix.wav",
+  "mots": "../work/mots_coupes.json",
+  "camera": { "src": "assets/media/aroll.mp4", "ratio": 1.7778, "cadrage": [0.5, 0.4] },
+  "musique": { "src": "assets/music/nappe.wav", "volume": 0.2, "fondu": 1.2 },
+  "scenes": [
+    { "id": "s01", "debut": 0, "fin": 6.2, "page": "partage",
+      "titre": { "faible": "Les 3 outils", "fort": "qui changent", "cle": "tout", "t": 0.1 },
+      "motion": { "type": "orbite", "t": 0.8, "textes": ["IA", "Script", "Montage", "Voix"], "medias": [] } },
+    { "id": "s02", "debut": 6.2, "fin": 9.0, "page": "visage" },
+    { "id": "s03", "debut": 9.0, "fin": 14.5, "page": "motion",
+      "titre": { "faible": "Résultat", "fort": "en", "cle": "30 jours" },
+      "motion": { "type": "chiffres", "t": 0.5, "chiffre": "+85 %", "textes": ["de vues"] } },
+    { "id": "s04", "debut": 14.5, "fin": 17.0, "page": "media", "media": "assets/media/broll-bureau.mp4" },
+    { "id": "s05", "debut": 17.0, "fin": 22.0, "page": "partage",
+      "titre": { "faible": "Tape", "fort": "ta", "cle": "question" },
+      "motion": { "type": "saisie", "t": 0.4, "textes": ["Écris-moi un script de pub"], "mots_t": [] } }
+  ],
+  "sfx": [
+    { "src": "assets/sfx/whoosh.wav", "t": 6.1, "volume": 0.35, "duree": 0.8 }
+  ]
+}
