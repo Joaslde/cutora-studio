@@ -21,15 +21,11 @@ motion design sans visage, capture d'écran et tutoriel, découpe d'une vidéo l
 Il faut un abonnement Claude (Pro ou Max) avec **Claude Code** : l'application de bureau Claude (onglet **Code**),
 le terminal ou VS Code. Windows, macOS ou Linux, et environ 10 Go libres.
 
-**Le plus simple : demander à Claude de l'installer.** Ouvre Claude Code et colle ce message :
+**Le plus simple : un seul message à coller dans Claude Code.** Ouvre [PROMPT-INSTALLATION.md](PROMPT-INSTALLATION.md),
+copie le bloc et envoie-le dans Claude Code. Claude installe git s'il manque (ou te guide pour le faire), installe le
+skill, puis lance tout de suite le studio : outils de montage, choix de ton style, première vidéo.
 
-```
-Installe le skill Cutora Studio depuis https://github.com/Joaslde/cutora-studio :
-clone le dépôt dans le dossier des skills de Claude (~/.claude/skills/cutora-studio),
-installe git d'abord s'il manque, puis dis-moi de redémarrer Claude Code.
-```
-
-Redémarre Claude Code, puis tape **`/cutora-studio`** : le studio installe ses outils et te guide pas à pas.
+Les fois suivantes, il suffit de taper **`/cutora-studio`** dans Claude Code.
 
 **À la main** (si tu préfères) :
 
