@@ -53,9 +53,26 @@ contiennent son contrat de rendu et son catalogue de blocs :
 npx --yes hyperframes skills update
 ```
 
-Cela installe `hyperframes`, `hyperframes-cli`, `hyperframes-registry` et `media-use`. Si la commande échoue,
-`git clone --depth 1 https://github.com/heygen-com/hyperframes` dans un dossier temporaire vide et copie les dossiers
-de `skills/` dans `~/.claude/skills/`. Vérifie qu'aucun skill existant n'est écrasé sans le dire.
+Cela installe `hyperframes`, `hyperframes-cli`, `hyperframes-registry` et `media-use`. Si la commande échoue
+(erreur fréquente sous Windows), récupère **seulement le dossier des fiches**, jamais le dépôt entier (il pèse plus de
+500 Mo et peut bloquer l'installation pendant des heures sur une connexion moyenne) :
+
+```powershell
+git clone --depth 1 --filter=blob:none --sparse https://github.com/heygen-com/hyperframes <dossier temporaire vide>
+git -C <dossier temporaire> sparse-checkout set skills
+```
+
+Environ 4 Mo, quelques secondes. Copie ensuite `hyperframes`, `hyperframes-cli`, `hyperframes-registry` et
+`media-use` de `skills/` dans `~/.claude/skills/`, puis supprime le dossier temporaire. Vérifie qu'aucun skill
+existant n'est écrasé sans le dire.
+
+**Ces fiches ne bloquent jamais le parcours** : elles servent au moment du montage, pas pour choisir un style. Si leur
+récupération traîne, passe à l'étape suivante (choix du style) et termine-les en arrière-plan. Dis-le clairement à la
+personne : « Je finis de récupérer un dernier outil en arrière-plan, ça ne t'empêche pas de continuer : on passe au
+choix de ton style. » Ne lui promets jamais de la prévenir plus tard sans lui dire ce qu'elle peut faire en attendant.
+
+Un téléchargement qui dépasse 5 minutes ou qui échoue deux fois : arrête-le, dis-le simplement, et propose la
+solution de secours au lieu de relancer la même chose.
 
 Test : `npx hyperframes --version`. Le premier rendu télécharge un navigateur sans interface (environ 550 Mo).
 

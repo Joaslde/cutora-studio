@@ -5,7 +5,11 @@
 - Après `winget install`, la commande n'est pas reconnue dans le terminal déjà ouvert : chemin complet ou relancer.
 - Python : `PYTHONUTF8=1` pour les accents. Les chemins `/tmp` ne marchent pas pour Python sous Windows.
 - ffmpeg récent : `-/filter_complex fichier.txt` remplace l'ancien `-filter_complex_script`.
-- `npx skills add` peut échouer (« Could not determine Node.js install directory ») : `git clone` puis copie.
+- `npx skills add` et `npx hyperframes skills update` peuvent échouer (« Could not determine Node.js install
+  directory ») : récupérer seulement le dossier `skills/` du dépôt (clone partiel, environ 4 Mo), jamais le dépôt
+  HyperFrames entier (plus de 500 Mo, téléchargement interminable). Voir [installation.md](installation.md) § 3.
+- Le mode automatique de Claude peut bloquer un téléchargement depuis Internet (`npx` d'un paquet inconnu) : expliquer
+  en une phrase ce que c'est et demander l'accord, puis relancer.
 - Mémoire faible : rendu en `-w 1`, `NODE_OPTIONS=--max-old-space-size=3072`, fermer les applications lourdes.
 
 ## Transcription
