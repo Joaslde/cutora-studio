@@ -1,12 +1,39 @@
 # Installer le studio
 
-Environ 20 à 40 minutes, une seule fois. L'utilisateur n'a rien de technique à faire : tu lances tout, tu expliques
-chaque étape en une phrase, tu ne lui demandes d'agir que pour cliquer « Oui » sur une fenêtre Windows ou accepter
-une autorisation de Claude. Quand une commande demande une autorisation, dis en une phrase pourquoi elle est sans
-risque.
+**L'installation ne doit jamais frustrer.** La personne attend quelques minutes au plus ; les gros téléchargements se
+font en arrière-plan pendant qu'elle choisit son style. Tu ne lui demandes d'agir que pour cliquer « Oui » sur une
+fenêtre Windows ou accepter une autorisation, en disant en une phrase pourquoi c'est sans risque.
 
-Le skill vit dans `~/.claude/skills/cutora-studio/` (`<skill>` ci-dessous). Les commandes sont données pour Windows
-(PowerShell) ; macOS : `brew install`, Linux : le gestionnaire de paquets.
+## Sous Windows : un seul script (toujours en premier)
+
+```powershell
+powershell -ExecutionPolicy Bypass -File "<skill>\scripts\installer.ps1"
+```
+
+Avant de le lancer, annonce la durée : « Si ton ordinateur n'a encore aucun outil, ça prend 5 à 10 minutes ; sinon
+moins d'une minute. Des fenêtres Windows peuvent demander une autorisation : clique sur Oui. »
+
+Le script fait tout, et saute ce qui est déjà là : place sur le disque, git, Node.js, Python et ffmpeg (winget), les
+bibliothèques Python, les fiches HyperFrames (4 Mo), l'atelier (`Documents\Cutora-Studio`) et `~/cutora-studio.json`.
+Il recharge lui-même le PATH, donc pas besoin de redémarrer pour les nouvelles commandes. Il lance ensuite **en
+arrière-plan** le navigateur de rendu (environ 550 Mo), les vidéos d'exemple de la page de choix et le modèle de
+transcription (environ 640 Mo) : 5 à 15 minutes selon la connexion, pendant que la personne choisit son style.
+
+Lis ses lignes `OK`, `A REVOIR`, `MANQUANT`, `CONSEIL` et traduis-les en une phrase simple. Enchaîne aussitôt sur le
+choix du style : **ne fais pas attendre la personne** pour les téléchargements en arrière-plan.
+
+**Avant le premier montage**, vérifie que le fichier `%USERPROFILE%\cutora-studio-pret.txt` existe (fin du travail en
+arrière-plan). S'il manque, regarde la fin de `cutora-studio-arriere-plan.log` et dis où on en est (« Il reste à finir
+de télécharger le moteur de transcription, environ 2 minutes »). En cas d'échec, relance seulement l'élément manquant.
+
+Un téléchargement qui dépasse 5 minutes sans progrès ou qui échoue deux fois : arrête-le, dis-le simplement, propose
+une autre voie. Ne relance jamais la même chose en boucle.
+
+## Sous macOS, Linux, ou si le script échoue : étape par étape
+
+Le skill vit dans `~/.claude/skills/cutora-studio/` (`<skill>` ci-dessous). Commandes Windows (PowerShell) ; macOS :
+`brew install`, Linux : le gestionnaire de paquets. Mêmes règles : saute ce qui est présent, lance les gros
+téléchargements (`npx hyperframes browser ensure`, `python <skill>/scripts/medias_exemples.py`) en arrière-plan.
 
 ## 1. Vérifier l'ordinateur
 
@@ -35,7 +62,7 @@ Affiche une ligne par outil : présent (version) ou absent.
 Puis les bibliothèques Python :
 
 ```powershell
-python -m pip install --upgrade yt-dlp faster-whisper edge-tts numpy scipy pillow
+python -m pip install --upgrade yt-dlp faster-whisper edge-tts numpy scipy pillow opentimelineio otio-fcp-adapter otio-fcpx-xml-adapter pycapcut==0.0.4
 ```
 
 - Après `winget`, les nouvelles commandes ne sont pas reconnues dans le terminal déjà ouvert : utilise le chemin
@@ -134,8 +161,8 @@ d'autorisation à chaque étape. Avec son accord, ajoute dans `~/.claude/setting
 
 ## 7. Test et suite
 
-1. Test de 8 secondes : une voix de 2 phrases (`<skill>/scripts/voix.py`), un titre mot par mot, un bruitage,
-   `npx hyperframes check`, aperçu dans le navigateur. Pas d'export.
-2. Résumé en 5 lignes : ce qui est installé, où est l'atelier, l'espace utilisé, ce qui a échoué (et quoi faire).
+1. Pas de vidéo de test pendant l'installation : elle ferait attendre la personne pour rien. La planche de style
+   (étape 3 du parcours) sert de test, avec son propre contenu.
+2. Résumé en 3 lignes : ce qui est installé, où est l'atelier, l'espace utilisé, ce qui a échoué (et quoi faire).
 3. Enchaîne sur **Découvrir le style** ([decouverte-style.md](decouverte-style.md)) : « Maintenant, on fait
    connaissance avec ton style. Tu as une vidéo que tu aimes, ou tu préfères que je te montre des choix ? »

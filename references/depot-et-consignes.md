@@ -52,6 +52,7 @@ Ses consignes générales vont dans `<atelier>/profils/<nom>/consignes.md`.
 Tu ne demandes **que ce qui ne se devine pas**, et seulement si ce n'est pas déjà noté :
 - le format de livraison, s'il ne se déduit ni du style ni du rush (vertical pour les réseaux, horizontal pour YouTube) ;
 - une durée visée, seulement si le rush est long (plus de 3 minutes) et le style fait pour des vidéos courtes ;
+- la quantité de B-roll (« peu », « régulier », « beaucoup »), une seule fois, puis notée ;
 - une seule question ouverte et facultative : « Quelque chose de particulier pour cette vidéo ? (sinon je fais comme
   d'habitude) ».
 

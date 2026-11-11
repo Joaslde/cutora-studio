@@ -10,6 +10,8 @@ correction.
 - **Reproduit une référence au plus près** : analyse plan par plan, image, rythme et son mesurés.
 - **Monte tes vidéos** : dépose tes rushs et tes B-rolls, il dérushe, monte, anime, sonorise, améliore l'image et
   le son, te montre l'aperçu, et n'exporte qu'avec ton accord.
+- **Exporte où tu veux** : la vidéo finie en MP4, et si tu veux un projet modifiable qui s'ouvre dans CapCut,
+  DaVinci Resolve, Premiere Pro ou Final Cut Pro, avec le temps d'export annoncé à l'avance.
 - **Apprend de toi** : chaque remarque est notée, classée et retenue. Plus tu l'utilises, moins tu as à corriger,
   jusqu'au montage presque automatique.
 

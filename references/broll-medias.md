@@ -18,26 +18,92 @@ Si la personne a ses propres plans (bureau, ville, sport, écran, produit), on l
    Avec des sous-agents, confie les planches par lots de 5 à des sous-agents rapides et peu coûteux.
 4. Au montage, une simple recherche dans `bibliotheque.md` trouve « moi au bureau la nuit » sans rouvrir une vidéo.
 
-## 2. Vidéos libres en ligne (sans compte, gratuit)
+## 2. Vidéos libres en ligne : chercher par contexte, choisir en regardant
 
-| Source | Licence | Comment |
+Un B-roll hors sujet est pire que pas de B-roll. Les erreurs à ne jamais refaire : prendre les premiers résultats sans
+les regarder, chercher un mot isolé (« yawning » renvoie des lions et des hippopotames), remettre le même plan, ou en
+mettre si peu que la vidéo reste plate.
+
+| Source | Licence | Accès |
 |---|---|---|
-| **Mixkit** (vidéos) | Gratuite, usage commercial, sans crédit, pas de revente des fichiers seuls | Page `https://mixkit.co/free-stock-video/<mot-anglais>/` ; fichier `https://assets.mixkit.co/videos/<id>/<id>-720.mp4` (ou `-1080.mp4`) |
-| **Pexels** (vidéos et photos) | Gratuite, sans crédit obligatoire | Site `https://www.pexels.com/fr-fr/chercher/videos/<mots>/` ; l'API demande une clé gratuite (à demander à la personne) |
-| **Pixabay** | Gratuite, sans crédit | Clé API gratuite nécessaire pour l'automatiser |
-| **Wikimedia Commons** | Variable (CC0, CC BY, CC BY-SA) | Lire la licence de chaque fichier ; créditer si CC BY |
-| **Openverse** (images) | CC0 ou CC BY | `https://api.openverse.org/v1/images/?q=<mots>&license=cc0` |
+| **Mixkit** | Gratuite, usage commercial, sans crédit obligatoire | Sans compte : `scripts/broll.py` |
+| **Pexels** | Gratuite, crédit apprécié | Clé gratuite (pexels.com/api, 2 minutes) dans `~/cutora-studio.json` (`"pexels_cle"`) : `scripts/broll.py` l'utilise. Propose-la à la personne la première fois : elle double le choix |
+| Wikimedia Commons, Openverse | Variable, CC0 ou CC BY | Pour des images ; créditer si CC BY |
 
-Méthode :
+### 2.1 Le contexte de la vidéo d'abord
 
-- Cherche en **anglais**, avec 1 ou 2 mots concrets (« laptop night », « city crowd », « money counting »).
-- Télécharge 3 à 5 candidats dans `work/broll-candidats/`, fais une planche de chaque, garde le meilleur.
-  Critères : même ambiance de lumière que le reste, pas de texte incrusté, pas de logo de marque gênant, un plan
-  qui **montre exactement le mot** prononcé.
-- Un faux A-roll (quelqu'un qui parle, pour un format sans visage) : une vidéo libre d'une personne face caméra,
-  dans un téléphone ou une carte, jamais présentée comme une vraie personne citée.
-- Recadre et étalonne le B-roll pour qu'il colle au reste ([image-son.md](image-son.md)).
-- Supprime les candidats non retenus à la fin.
+Avant toute recherche, écris pour toi une **fiche contexte** en 4 lignes, tirée de la transcription et du profil :
+- **le thème** (travail et fatigue, argent, sport, IA, famille...) ;
+- **les personnes** qu'on doit voir : âge, style, cohérentes avec la personne qui parle et son public ;
+- **les lieux** (bureau, ville, maison, extérieur) ;
+- **l'ambiance d'image** (lumière chaude ou froide, jour ou nuit, sobre ou énergique).
+
+Tous les B-rolls d'une vidéo appartiennent au **même univers** : mêmes types de personnes, de lieux, de lumière. Une
+vidéo sur l'épuisement au travail montre des bureaux, des écrans, des visages fatigués, pas une plage puis un tigre.
+
+### 2.2 Les moments
+
+Repère dans la transcription les phrases qui gagnent à être **montrées** : une action (« je travaille la nuit »), un
+lieu, un objet, une émotion forte, un chiffre concret, un exemple. Regroupe-les **par thème** (tous les moments
+« fatigue », tous les moments « argent ») : une recherche par thème donne une série cohérente.
+
+Densité, selon le format et les consignes de la personne :
+
+| Format | B-roll |
+|---|---|
+| F3 montage complet | Un plan toutes les 4 à 8 s, c'est la matière principale |
+| F1 et F2 face caméra | Un plan de 1 à 3 s sur chaque moment fort, environ toutes les 10 à 20 s |
+| F4 motion design | Dans des cartes ou des téléphones, sur les exemples concrets |
+| F5 capture d'écran | Rarement : seulement pour une illustration hors écran |
+
+La densité (« peu », « régulier », « beaucoup ») se demande **une fois**, puis se note dans `consignes.md`.
+
+### 2.3 Les requêtes
+
+Pour chaque thème, 3 à 5 requêtes en **anglais**, chacune construite comme **qui + quoi + où** et tirée de la fiche
+contexte : « tired employee at desk at night », « exhausted woman office laptop », « man rubbing eyes computer ». Jamais
+un mot seul. Varie les angles (gros plan, plan large, mains, visage) pour avoir de quoi monter une série.
+
+```powershell
+python <skill>/scripts/broll.py chercher <projet>/travail/broll/fatigue "tired employee at desk at night" "exhausted woman office laptop" "man rubbing eyes computer" --orientation landscape --n 12
+```
+
+Le script rassemble Mixkit et Pexels, écarte les plans déjà utilisés et fabrique des **planches numérotées** avec
+le titre de chaque plan.
+
+### 2.4 Choisir en regardant (obligatoire)
+
+Regarde **chaque planche**. Un plan est retenu seulement s'il coche tout :
+- il montre **exactement** l'idée de la phrase, dans le contexte de la vidéo ;
+- les personnes sont cohérentes avec la personne qui parle et son public ;
+- même univers et même lumière que les autres plans retenus ;
+- cadrage compatible avec le format (vertical ou horizontal, sujet au centre si on recadre) ;
+- pas d'animal, de lieu ou d'époque hors sujet, pas de texte incrusté ni de logo gênant.
+
+Rien ne convient : reformule (autres mots, autre angle) jusqu'à 2 fois. Toujours rien : remplace par un élément de
+motion design, jamais par un plan faible.
+
+```powershell
+python <skill>/scripts/broll.py prendre <projet>/travail/broll/fatigue <projet>/montage 1 10 11
+```
+
+Les plans choisis arrivent en HD dans `montage/assets/broll/`, sont crédités dans `CREDITS.md` et notés dans
+`deja-utilises.json` : **jamais deux fois le même plan** dans une vidéo. Pour éviter les répétitions d'une vidéo à
+l'autre, garde aussi la liste dans `profils/<personne>/broll-deja-utilises.json`.
+
+### 2.5 Montrer avant de monter
+
+Au niveau d'autonomie 1 et 2, montre la sélection avant de l'intégrer : une planche des plans retenus, avec la phrase
+sur laquelle chacun tombera. « Voici les B-rolls que je propose. Je garde tout, ou j'en change un ? » Ses refus vont
+dans le journal (« pas de plans trop corporate », « des personnes plus jeunes ») : la recherche suivante en tient compte.
+
+### 2.6 Poser le B-roll
+
+- Sur le mot qui le nomme, 0,5 à 3 s, en coupe franche ou dans une carte selon le style.
+- Recadre et étalonne-le pour qu'il colle au reste ([image-son.md](image-son.md)).
+- Faux A-roll (format sans visage) : une personne libre qui parle face caméra, dans un téléphone ou une carte, jamais
+  présentée comme une vraie personne citée.
+- Supprime les candidats non retenus à la fin (`travail/broll/*/vignettes`).
 
 ## 3. Logos et interfaces
 

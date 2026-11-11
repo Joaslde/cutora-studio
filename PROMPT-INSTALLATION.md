@@ -32,9 +32,14 @@ brute : dis-moi ce qui se passe et ce que tu fais pour le régler.
    - s'il y est déjà : mets-le à jour avec git pull dans ce dossier. Mes styles ne sont pas dedans, ils ne risquent rien.
    Vérifie que le fichier SKILL.md est bien présent dans ce dossier.
 
-4. Lis entièrement ~/.claude/skills/cutora-studio/SKILL.md, puis commence tout de suite le parcours du studio comme
-   si j'avais tapé /cutora-studio : installe les outils de montage (étape 1 du parcours), puis passe au choix de
-   mon style. Suis les règles du skill, en particulier le guidage pas à pas.
+4. Installe les outils de montage. Sous Windows, lance le script d'installation du skill, en une seule commande :
+   powershell -ExecutionPolicy Bypass -File "$env:USERPROFILE\.claude\skills\cutora-studio\scripts\installer.ps1"
+   Annonce-moi d'abord la durée (5 à 10 minutes si rien n'est installé, moins d'une minute sinon). Sous Mac ou Linux,
+   suis la fiche references/installation.md du skill. Les gros téléchargements continuent en arrière-plan : ne me
+   fais pas attendre pour eux.
+
+   Ensuite, lis entièrement ~/.claude/skills/cutora-studio/SKILL.md et continue le parcours du studio comme si j'avais
+   tapé /cutora-studio : le choix de mon style. Suis les règles du skill, en particulier le guidage pas à pas.
 
 5. Quand l'installation des outils est finie, dis-moi en 3 lignes ce qui est installé, puis continue avec le choix
    de mon style. Rappelle-moi aussi qu'à partir de la prochaine fois, il me suffira d'ouvrir Claude Code et de taper

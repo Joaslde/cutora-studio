@@ -90,7 +90,7 @@ Les fiches de fond, à lire quand le montage en a besoin :
 | Bruitages et musique | [references/bruitages-musique.md](references/bruitages-musique.md) |
 | B-roll, photos, logos, icônes : où les trouver gratuitement | [references/broll-medias.md](references/broll-medias.md) |
 | Contrôle qualité avant de montrer quoi que ce soit | [references/qualite.md](references/qualite.md) |
-| Export et livraison | [references/export.md](references/export.md) |
+| Export et livraison : MP4, et projet modifiable pour CapCut, DaVinci Resolve, Premiere Pro, Final Cut Pro | [references/export.md](references/export.md) |
 | Pièges techniques déjà rencontrés | [references/pieges.md](references/pieges.md) |
 
 Le moteur de montage est **HyperFrames** (HTML rendu en vidéo, gratuit, local). Ses propres skills
