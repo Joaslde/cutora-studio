@@ -13,7 +13,7 @@ sous toute la vidéo, à faible volume mais audible.
 | Un son **réel et précis** (ciseaux, déclencheur, clavier, papier, crayon, porte, foule...) | **Openverse CC0** (`<skill>/scripts/openverse.py`) | Vrais enregistrements Freesound, gratuits, sans crédit en CC0 |
 | Openverse ne répond pas (504) ou bloque (429), ou besoin d'un son « cinéma » (impact de bande-annonce, riser, whoosh tunnel) | **Mixkit** (`<skill>/scripts/mixkit_sfx.py`) | Fiable, sons pro, licence gratuite commerciale sans crédit |
 | Clic, pop, whoosh d'interface **neutres**, ou travail hors ligne | Bibliothèque **HyperFrames** intégrée : dossier `audio/assets/sfx/` du skill `media-use` (une vingtaine de sons, `manifest.json`) | Immédiate, mais sons « classiques » : à réserver aux UI simples |
-| Musique de fond | Nappe **composée** (`<skill>/scripts/synth_bed.py`, calée sur les scènes) ou piste Mixkit / Openverse (`category=music`) | Voir § 4 |
+| Musique de fond | **Catalogue du skill** (`musique/catalogue.json`, choisi par `scripts/musique.py`), nappe composée en secours | Voir § 4 |
 
 Règles :
 - Jamais deux fois le même son générique d'affilée sur des actions différentes : un son par **sens** (ce qu'on voit).
@@ -46,16 +46,75 @@ Règles :
 - Placement : `debut_audio = instant_action - point_synchro + 0.033` (une image après l'action à 30 i/s).
 - Pistes : une piste libre par son qui se chevauche (allocation automatique).
 
-## 4. Musique
+## 4. Musique de fond
 
-- Une nappe continue sous toute la vidéo, **pas d'horreur** (pas de stridences, pas de cris, pas de piano dissonant).
-- « Suspense » pour une pub = pulsation de basse en croches discrète + nappe tenue + cordes aiguës en trémolo,
-  avec des sections qui suivent le montage (étouffée au début, ouverture au point de bascule, suspension avant la
-  phrase clé, résolution sur le CTA). `<skill>/scripts/synth_bed.py` en est un modèle à adapter (accords, temps des
-  sections).
-- Vérifier l'équilibre : sur un téléphone, une nappe à 90 % sous 400 Hz est inaudible. Viser du médium
-  (400 à 1200 Hz) audible.
-- Niveau : piste normalisée à -16 LUFS puis volume 0,2 à 0,25 sous la voix.
+Le skill a son **catalogue** : `musique/catalogue.json`, plusieurs centaines de morceaux Mixkit (licence gratuite,
+usage commercial compris, sans crédit obligatoire), chacun classé (ambiances, instruments, genres) et **mesuré**
+(tempo, énergie, régularité, voix chantée probable, début utile). Les mesures remplacent l'oreille : tu ne peux pas
+écouter, le catalogue l'a fait pour toi. Ne prends jamais un morceau au hasard ni le premier venu.
+
+### 4.1 Lire la vidéo avant de chercher
+
+Avant toute recherche, écris en 3 lignes ce que la vidéo demande, d'après **trois sources** :
+
+1. **Le script** (transcription) : le sujet, et surtout le ton. Une confidence, une méthode, une alerte, une
+   réussite, une blague ? Le message final (rassurer, pousser à agir, faire réfléchir) ?
+2. **Les images** (planches de la vidéo ou captures) : visage posé ou en mouvement, écran partagé, extérieur, bureau,
+   couleurs chaudes ou froides, luxe ou quotidien.
+3. **Le rythme** : débit de parole (mots par minute dans la transcription), nombre de coupes par minute du montage
+   prévu, durée. Débit lent et peu de coupes : 60 à 95 BPM. Débit normal : 90 à 115. Montage nerveux : 110 à 140.
+
+Traduis ensuite en **une ou deux familles** (`python <skill>/scripts/musique.py familles` les liste) : calme,
+inspirant, motivant, pro, reflexion, suspense, sombre, epique, leger, decale, tech, chill, elegant, dramatique,
+festif. Exemple : « dire non sans culpabiliser » : récit personnel puis déclic, débit posé, visage fixe :
+`reflexion` puis `inspirant`, 75 à 100 BPM, énergie basse.
+
+Si le style de la personne précise déjà une musique (style.md, gouts.md), il passe avant ta lecture.
+
+### 4.2 Choisir dans le catalogue
+
+```powershell
+python <skill>/scripts/musique.py choisir <projet> --familles reflexion,inspirant --tempo 75-100 --energie basse --duree <durée de la vidéo> --profil <atelier>/profils/<nom>
+```
+
+Options utiles : `--instruments piano,strings`, `--genres corporate-music`, `--eviter dark,scary` (ce que la personne
+a refusé), `--n 8`. Le script écarte les morceaux **déjà utilisés** par cette personne, ceux avec une voix chantée
+(elle se bat avec la voix off), garde un seul morceau par auteur pour que la sélection soit variée, et explique
+chaque choix. Il écrit `<projet>/musique/ecoute.html`.
+
+### 4.3 Faire écouter, sous la voix
+
+1. Ouvre `ecoute.html` pour la personne (chaque morceau démarre à son début utile).
+2. Pour les 2 ou 3 favoris, fabrique un **essai sous la vraie voix**, car une musique seule et une musique sous une
+   voix sont deux choses :
+   `python <skill>/scripts/musique.py essai <projet> <id> --voix <voix.wav> --duree 30`
+3. Demande par une question à choix : « Laquelle on garde ? 1, 2, 3, ou d'autres propositions ». Si la personne
+   n'aime aucune, demande en un mot ce qui ne va pas (trop triste, trop joyeux, trop présent, trop lent) et relance
+   avec une famille ou un tempo différent.
+4. Une fois choisi : `python <skill>/scripts/musique.py prendre <projet> <id> --profil <dossier du profil>`
+   (téléchargement, note dans `musiques-utilisees.json` pour ne jamais la resservir, ligne dans `CREDITS.md`).
+
+En mode autonome (la personne a dit « choisis pour moi » ou son autonomie le permet), prends le premier du
+classement, annonce-le en une ligne avec la raison, et propose de changer.
+
+### 4.4 Placer la musique
+
+- Commencer au **début utile** du morceau (mesuré, pas de silence d'entrée), fondu d'entrée de 1 à 2 s.
+- Morceau plus court que la vidéo : enchaîner un second morceau de la même famille au point de bascule du script
+  (fondu croisé de 2 s), plutôt qu'une boucle qui s'entend.
+- Respiration : baisser la musique d'environ 3 dB sous les phrases clés, la remonter dans les silences et les
+  transitions, couper ou suspendre une seconde avant la révélation.
+- Fin : sur le CTA ou la dernière phrase, fondu de sortie de 2 à 3 s, jamais une coupe sèche.
+- Niveau : piste normalisée à -16 LUFS, puis volume 0,3 à 0,4 sous la voix (environ 8 à 10 dB plus bas que la voix). Plus bas, la musique
+  disparaît sur les haut-parleurs d'un téléphone ou d'un ordinateur : la personne croit qu'il n'y en a pas. Pas d'horreur (stridences, cris,
+  piano dissonant) sauf demande explicite.
+- Sur téléphone, une musique à 90 % sous 400 Hz est inaudible : préférer un morceau avec du médium.
+
+### 4.5 Nappe composée (secours)
+
+Si rien ne convient dans le catalogue, ou pour une pub très calée sur l'image : nappe composée
+(`<skill>/scripts/synth_bed.py`, `synth_nappe_calme.py`), sections qui suivent le montage (étouffée au début,
+ouverture au point de bascule, suspension avant la phrase clé, résolution sur le CTA).
 
 ## 5. Vérifier le mixage sans rendre la vidéo
 
@@ -67,7 +126,7 @@ Je ne peux pas écouter : je mesure. Toujours le dire à l'utilisateur et lui la
 
 ## 6. Ce que le profil doit retenir
 
-- La musique choisie (caractère, source, volume) et celles refusées, avec ses mots (« ça fait horreur »,
+- La musique choisie (famille, id, volume) et celles refusées (avec leur id et la raison), avec ses mots (« ça fait horreur »,
   « c'était mieux avant »).
 - La densité des bruitages qu'il supporte : un son sur chaque élément qui entre est presque toujours refusé.
 - Les sons qui lui plaisent (gardés dans `profils/<nom>/sons/` avec leur licence) pour les réutiliser.

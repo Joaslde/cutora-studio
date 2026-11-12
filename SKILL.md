@@ -123,6 +123,10 @@ Le moteur de montage est **HyperFrames** (HTML rendu en vidéo, gratuit, local).
   ou la taille et obtenir un oui.
 - **Droits** : médias libres de droits (licences notées dans `CREDITS.md` du projet), vrais logos des marques citées,
   jamais d'image ni de son copiés d'une référence. Une référence est un modèle de grammaire, pas une banque d'images.
+- **La musique se choisit d'après la vidéo, jamais au hasard** : lire le script, les images et le rythme, choisir
+  dans le catalogue du skill, faire écouter les favoris sous la vraie voix
+  ([references/bruitages-musique.md](references/bruitages-musique.md) § 4). Jamais deux fois le même morceau pour la
+  même personne, sauf demande.
 - **Pas d'emoji dans les vidéos** : icônes dessinées, vrais logos, vraies photos.
 - **Disque** : ne pas dupliquer les rushs, supprimer les fichiers intermédiaires à la fin de chaque étape.
 
@@ -149,6 +153,8 @@ Le moteur de montage est **HyperFrames** (HTML rendu en vidéo, gratuit, local).
   d'exemple (`choix/media/`) sont téléchargées à l'installation par `scripts/medias_exemples.py`.
 - `modele-montage/` : le générateur de montage (`build.py`), le kit visuel et d'animation commun avec la page
   (`kit.css`, `kit.js`) et un plan d'exemple.
+- `musique/catalogue.json` : le catalogue des musiques de fond (liens Mixkit classés et mesurés, sans fichiers
+  audio), lu par `scripts/musique.py` ; reconstruit par l'équipe avec `scripts/catalogue_musique.py --mesurer`.
 - `profil-modele/` : les modèles de profil copiés pour chaque nouvelle personne.
-- `scripts/` : outils Python (analyse de référence, transcription, voix off, bruitages, mixage, serveur de choix).
+- `scripts/` : outils Python (analyse de référence, transcription, voix off, musique, bruitages, mixage, B-roll, export, serveur de choix).
 - `CREDITS.md` : ce que ce skill reprend d'autres projets libres, et leurs licences.
