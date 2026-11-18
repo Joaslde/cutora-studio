@@ -7,9 +7,14 @@ pas : en cas de doute, demande.
 
 Après la validation de l'aperçu, demande par une question à choix ce qu'elle veut recevoir :
 - **« La vidéo finie (MP4) »** (recommandé, le plus rapide) ;
-- **« La vidéo finie et un projet modifiable »** pour CapCut, DaVinci Resolve, Premiere Pro ou Final Cut Pro (§ 4).
+- **« La vidéo finie et un projet à retoucher dans mon logiciel »** (§ 4).
 
-Retiens sa réponse dans `consignes.md` : la fois suivante, ne repose pas la question, propose la même chose.
+Si elle veut un projet, demande **quel logiciel** elle utilise (Premiere Pro, DaVinci Resolve, Final Cut Pro,
+CapCut) et **n'exporte que celui-là**. Ne propose jamais tous les formats d'un coup : c'est plus long, plus lourd, et
+on ne sait plus quoi ouvrir.
+
+Retiens ses réponses dans `consignes.md` (`export: mp4 + projet premiere`) : la fois suivante, ne repose pas la
+question, propose la même chose.
 
 ## 1. Rendu
 
@@ -55,36 +60,34 @@ présente jamais comme la vidéo à envoyer sur Frame.io ou sur les réseaux.
 - Ménage : fichiers intermédiaires supprimés, versions gardées (sources, pas les rendus intermédiaires).
 - Puis le **bilan de goût** ([apprentissage.md](apprentissage.md) § 5).
 
-## 4. Le projet modifiable (CapCut, DaVinci, Premiere, Final Cut)
+## 4. Le projet modifiable (un seul logiciel : celui de la personne)
 
-Pour retoucher le montage dans son logiciel, sans consommer son abonnement Claude. Le montage est livré **en couches** :
-fond et caméra, animations sur fond transparent, sous-titres sur fond transparent, voix, musique, bruitages, chacun
-sur sa piste et à sa place.
+Pour retoucher le montage dans son logiciel. Le dossier livré contient **un seul fichier à ouvrir**
+(« <nom> - OUVRIR DANS PREMIERE.xml », ou DAVINCI, FINAL CUT), un `LISEZ-MOI.txt`, et un dossier `Medias/` rangé.
+Sur la timeline, tout est déjà à sa place : fond et caméra découpés en blocs, **chaque animation** et **chaque
+sous-titre** comme un élément séparé, voix, musique, **chaque bruitage**.
 
 1. **Estime d'abord, et dis-le avant de lancer** :
    ```powershell
-   python <skill>/scripts/export_projet.py <projet>/build/plan.json <projet>/exports/<nom>-projet-modifiable --estimer
+   python <skill>/scripts/export_projet.py <projet>/build/plan.json <projet>/exports/<nom>-<logiciel> --logiciel premiere --estimer
    ```
-   Le script donne le temps de calcul (d'après les coeurs et la mémoire de l'ordinateur, ou d'après la vitesse mesurée
-   lors d'un export précédent) et la place sur le disque. Annonce-les simplement : « Ça va prendre environ 1 h 10 et
-   2 Go. Je le lance en arrière-plan, tu peux faire autre chose. » Vérifie la place libre : s'il en manque, dis-le et
-   propose la version légère ou un extrait.
-2. **Lance en arrière-plan** (sans `--estimer`). Ajoute `--leger` pour des animations en WebM, 50 à 100 fois plus
-   légères, utiles si la place manque ou si le logiciel refuse le ProRes. Machine modeste : `--workers 1`.
-3. **Ce qui est livré** dans le dossier : `01-video-fond.mp4`, `02-graphismes.mov` et `03-sous-titres.mov`
-   (ProRes 4444 transparent), `sous-titres.srt`, `audio/` (voix, musique, bruitages un par un et en une piste),
-   `montage-premiere-davinci.xml`, `montage-finalcut.fcpxml`, `montage.otio`, `LISEZ-MOI.txt`. Et, si CapCut est
-   installé, **un projet CapCut prêt** dans la liste de ses projets (« Cutora - <nom> »).
-4. **Explique comment l'ouvrir**, selon son logiciel :
-   - CapCut : fermer et rouvrir CapCut, puis ouvrir « Cutora - <nom> » dans la liste des projets ;
-   - DaVinci Resolve : Fichier, Importer, Timeline, puis `montage.otio` ;
-   - Premiere Pro : Fichier, Importer, puis `montage-premiere-davinci.xml` ;
-   - Final Cut Pro : Fichier, Importer, XML, puis `montage-finalcut.fcpxml`.
-   Ouvre le dossier pour elle. Le dossier doit rester entier : les projets pointent vers les fichiers qu'il contient.
-5. **Dis honnêtement ce qui se modifie** : coupes, ordre, durée, chaque bloc d'animation (déplacer, supprimer,
-   redimensionner), texte des sous-titres (fichier `.srt`), musique, bruitages, volumes, étalonnage. Le texte et le
-   mouvement **à l'intérieur** d'une animation ne se modifient pas : c'est une vidéo. Pour changer un titre animé,
-   masquer ce bloc et ajouter son propre titre, ou demander la modification ici.
+   Annonce le temps et la place simplement : « Ça va prendre environ 40 min et 200 Mo. Je le lance en arrière-plan,
+   tu peux faire autre chose. » Vérifie la place libre pendant le calcul (le script l'indique).
+2. **Lance en arrière-plan** (sans `--estimer`), `--logiciel premiere|davinci|finalcut|capcut`. Machine modeste :
+   `--workers 1`.
+3. **Explique comment l'ouvrir, pas à pas** (le `LISEZ-MOI.txt` le dit aussi) :
+   - **Premiere Pro** : ouvrir Premiere, Fichier, Importer (Ctrl+I), choisir le fichier « OUVRIR DANS PREMIERE »,
+     double-cliquer la séquence qui apparaît, puis **Fichier, Enregistrer sous** : la personne obtient son fichier de
+     projet `.prproj`, qu'elle rouvrira directement ensuite. Prévenir : **ne pas double-cliquer le .xml dans
+     l'Explorateur** (il s'ouvre dans un navigateur).
+   - **DaVinci Resolve** : Fichier, Importer, Timeline, puis le fichier « OUVRIR DANS DAVINCI » (.xml ou .otio).
+   - **Final Cut Pro** : Fichier, Importer, XML, puis le fichier « OUVRIR DANS FINAL CUT ».
+   - **CapCut** : le projet « Cutora - <nom> » est déjà dans sa liste de projets ; fermer et rouvrir CapCut.
+   Ouvre le dossier pour elle. Le dossier doit rester entier : le projet pointe vers les fichiers de `Medias/`.
+4. **Dis honnêtement ce qui se modifie** : coupes, ordre, durée, chaque animation et chaque sous-titre (déplacer,
+   raccourcir, supprimer), le texte des sous-titres (fichier `.srt`, à importer comme piste de sous-titres), musique,
+   bruitages, volumes, étalonnage. Le texte et le mouvement **à l'intérieur** d'une animation ne se modifient pas :
+   c'est une vidéo. Pour changer un titre animé, le supprimer et ajouter son propre titre, ou demander ici.
 
 Le script retient la vraie vitesse de l'ordinateur dans `~/cutora-studio.json` : les estimations suivantes sont plus
 justes.
