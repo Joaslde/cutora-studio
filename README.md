@@ -54,3 +54,8 @@ Tes styles et tes préférences sont rangés dans ton atelier (`Documents/Cutora
 dossier du skill : une mise à jour du skill ne les efface pas.
 
 Voir [CREDITS.md](CREDITS.md).
+
+## Licence
+
+Cutora Studio est une création originale de l'équipe Cutora, tous droits réservés : usage réservé aux détenteurs
+d'une licence, revente, copie et redistribution interdites. Voir [LICENSE.md](LICENSE.md).
